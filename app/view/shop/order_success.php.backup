@@ -1,0 +1,83 @@
+<?php require_once '../app/view/template/header.php'; ?>
+
+<style>
+    .success-page {
+        background: #f8f9fa;
+        min-height: 100vh;
+        padding: 30px 0;
+    }
+    
+    .success-card {
+        border: none;
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        overflow: hidden;
+    }
+    
+    .success-header {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: white;
+        padding: 40px 20px;
+        position: relative;
+    }
+    
+    .success-icon {
+        width: 100px;
+        height: 100px;
+        background: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        animation: scaleIn 0.5s ease;
+    }
+    
+    @keyframes scaleIn {
+        from {
+            transform: scale(0);
+            opacity: 0;
+        }
+        to {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+    
+    .order-number {
+        background: white;
+        color: #10b981;
+        padding: 20px;
+        border-radius: 15px;
+        margin: 20px 0;
+        box-shadow: 0 5px 15px rgba(16, 185, 129, 0.2);
+    }
+    
+    .detail-section {
+        background: #f8f9fa;
+        border-radius: 15px;
+        padding: 20px;
+        margin: 15px 0;
+    }
+    
+    .item-card {
+        background: white;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 10px;
+        border: 1px solid #e9ecef;
+        display: flex;
+        align-items: center;
+    }
+    
+    .timeline {
+        position: relative;
+        padding-left: 30px;
+        margin: 20px 0;
+    }
+    
+    .timeline::before {
+        content: '';\n        position: absolute;\n        left: 10px;\n        top: 0;\n        bottom: 0;\n        width: 2px;\n        background: #e9ecef;\n    }\n    \n    .timeline-item {\n        position: relative;\n        margin-bottom: 15px;\n    }\n    \n    .timeline-item::before {\n        content: '';\n        position: absolute;\n        left: -26px;\n        top: 5px;\n        width: 12px;\n        height: 12px;\n        border-radius: 50%;\n        background: #10b981;\n        border: 3px solid white;\n        box-shadow: 0 0 0 3px #e9ecef;\n    }\n</style>\n\n<div class=\"success-page\">\n    <div class=\"container\">\n        <div class=\"row justify-content-center\">\n            <div class=\"col-lg-8\">\n                <div class=\"success-card card\">\n                    <div class=\"success-header text-center\">\n                        <div class=\"success-icon\">\n                            <i class=\"fas fa-check fa-3x text-success\"></i>\n                        </div>\n                        <h1 class=\"mb-2\">Pesanan Berhasil!</h1>\n                        <p class=\"mb-0 opacity-75\">Terima kasih telah berbelanja di AIMVC Store</p>\n                    </div>
+                    
+                    <div class=\"card-body p-4\">\n                        <div class=\"order-number text-center\">\n                            <h5 class=\"mb-2\">Nomor Pesanan Anda</h5>\n                            <h2 class=\"fw-bold mb-2\"><?= htmlspecialchars($data['order']['order_number']); ?></h2>\n                            <p class=\"text-muted small mb-0\">\n                                <i class=\"fas fa-calendar me-2\"></i><?= date('d M Y, H:i', strtotime($data['order']['created_at'])); ?>\n                            </p>\n                        </div>\n                        \n                        <!-- Order Timeline -->\n                        <div class=\"detail-section\">\n                            <h6 class=\"mb-3\"><i class=\"fas fa-shipping-fast me-2\"></i>Status Pengiriman</h6>\n                            <div class=\"timeline\">\n                                <div class=\"timeline-item\">\n                                    <strong>Pesanan Dibuat</strong>\n                                    <p class=\"text-muted small mb-0\">Pesanan Anda sedang diproses</p>\n                                </div>\n                                <div class=\"timeline-item\" style=\"opacity: 0.5;\">\n                                    <strong>Sedang Dikemas</strong>\n                                    <p class=\"text-muted small mb-0\">Produk sedang disiapkan</p>\n                                </div>\n                                <div class=\"timeline-item\" style=\"opacity: 0.5;\">\n                                    <strong>Dikirim</strong>\n                                    <p class=\"text-muted small mb-0\">Dalam perjalanan ke alamat Anda</p>\n                                </div>\n                                <div class=\"timeline-item\" style=\"opacity: 0.5;\">\n                                    <strong>Selesai</strong>\n                                    <p class=\"text-muted small mb-0\">Pesanan diterima</p>\n                                </div>\n                            </div>\n                        </div>\n                        \n                        <!-- Order Details -->\n                        <div class=\"row\">\n                            <div class=\"col-md-6 mb-3\">\n                                <div class=\"detail-section\">\n                                    <h6 class=\"mb-3\"><i class=\"fas fa-info-circle me-2 text-primary\"></i>Detail Pesanan</h6>\n                                    <table class=\"table table-sm table-borderless mb-0\">\n                                        <tr>\n                                            <td class=\"text-muted\">Status:</td>\n                                            <td><span class=\"badge bg-warning\">Pending</span></td>\n                                        </tr>\n                                        <tr>\n                                            <td class=\"text-muted\">Pembayaran:</td>\n                                            <td><strong><?= $data['order']['payment_method'] == 'cod' ? 'Cash on Delivery' : 'Transfer Bank'; ?></strong></td>\n                                        </tr>\n                                        <tr>\n                                            <td class=\"text-muted\">Total:</td>\n                                            <td><h5 class=\"text-success mb-0\">Rp <?= number_format($data['order']['total_amount'], 0, ',', '.'); ?></h5></td>\n                                        </tr>\n                                    </table>\n                                </div>\n                            </div>\n                            <div class=\"col-md-6 mb-3\">\n                                <div class=\"detail-section\">\n                                    <h6 class=\"mb-3\"><i class=\"fas fa-map-marker-alt me-2 text-danger\"></i>Alamat Pengiriman</h6>\n                                    <p class=\"mb-2\"><?= nl2br(htmlspecialchars($data['order']['shipping_address'])); ?></p>\n                                    <p class=\"mb-0\">\n                                        <i class=\"fas fa-phone me-2\"></i>\n                                        <strong><?= htmlspecialchars($data['order']['phone']); ?></strong>\n                                    </p>\n                                </div>\n                            </div>\n                        </div>\n                        \n                        <!-- Products Ordered -->\n                        <div class=\"detail-section\">\n                            <h6 class=\"mb-3\"><i class=\"fas fa-box me-2\"></i>Produk yang Dibeli (<?= count($data['order_items']); ?> item)</h6>\n                            <?php foreach ($data['order_items'] as $item): ?>\n                                <div class=\"item-card\">\n                                    <?php if (!empty($item['image'])): ?>\n                                        <img src=\"<?= htmlspecialchars($item['image']); ?>\" \n                                             alt=\"<?= htmlspecialchars($item['product_name']); ?>\" \n                                             style=\"width: 60px; height: 60px; object-fit: contain; border-radius: 8px; background: #f8f9fa; padding: 5px;\" \n                                             class=\"me-3\">\n                                    <?php endif; ?>\n                                    <div class=\"flex-grow-1\">\n                                        <h6 class=\"mb-1\"><?= htmlspecialchars($item['product_name']); ?></h6>\n                                        <small class=\"text-muted\"><?= $item['quantity']; ?> x Rp <?= number_format($item['price'], 0, ',', '.'); ?></small>\n                                    </div>\n                                    <strong class=\"text-success\">Rp <?= number_format($item['price'] * $item['quantity'], 0, ',', '.'); ?></strong>\n                                </div>\n                            <?php endforeach; ?>\n                        </div>\n                        \n                        <!-- Next Steps -->\n                        <div class=\"alert alert-info mb-4\">\n                            <h6 class=\"mb-2\"><i class=\"fas fa-lightbulb me-2\"></i>Langkah Selanjutnya:</h6>\n                            <ul class=\"mb-0 ps-3\">\n                                <li>Kami akan mengirim notifikasi via email/SMS untuk update status pesanan</li>\n                                <li>Pesanan akan diproses dalam 1-2 hari kerja</li>\n                                <li>Estimasi pengiriman 3-5 hari kerja</li>\n                                <li>Simpan nomor pesanan untuk tracking</li>\n                            </ul>\n                        </div>\n                        \n                        <!-- Action Buttons -->\n                        <div class=\"text-center\">\n                            <a href=\"<?= BASEURL; ?>shop/orderDetail/<?= $data['order']['id']; ?>\" class=\"btn btn-primary btn-lg me-2 mb-2\">\n                                <i class=\"fas fa-search me-2\"></i>Lacak Pesanan\n                            </a>\n                            <a href=\"<?= BASEURL; ?>shop/myOrders\" class=\"btn btn-outline-primary btn-lg me-2 mb-2\">\n                                <i class=\"fas fa-list me-2\"></i>Lihat Semua Pesanan\n                            </a>\n                            <a href=\"<?= BASEURL; ?>shop\" class=\"btn btn-outline-secondary btn-lg mb-2\">\n                                <i class=\"fas fa-shopping-bag me-2\"></i>Belanja Lagi\n                            </a>\n                        </div>\n                        \n                        <!-- Share Section -->\n                        <div class=\"text-center mt-4 pt-4 border-top\">\n                            <p class=\"text-muted mb-2\">Puas dengan layanan kami? Bagikan pengalaman Anda!</p>\n                            <button class=\"btn btn-sm btn-outline-primary me-2\">\n                                <i class=\"fab fa-facebook-f me-1\"></i>Facebook\n                            </button>\n                            <button class=\"btn btn-sm btn-outline-info me-2\">\n                                <i class=\"fab fa-twitter me-1\"></i>Twitter\n                            </button>\n                            <button class=\"btn btn=\"sm btn-outline-success\">\n                                <i class=\"fab fa-whatsapp me-1\"></i>WhatsApp\n                            </button>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n\n<script>\n// Auto scroll to top on page load\nwindow.scrollTo(0, 0);\n\n// Show success animation\nsetTimeout(function() {\n    const icon = document.querySelector('.success-icon');\n    if (icon) {\n        icon.style.animation = 'scaleIn 0.5s ease';\n    }\n}, 100);\n</script>\n\n<?php require_once '../app/view/template/footer.php'; ?>

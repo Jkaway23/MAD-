@@ -1,0 +1,16 @@
+# Deny all direct access to config folder
+# This protects database credentials and configuration files
+
+<IfModule mod_authz_core.c>
+    # Apache 2.4+
+    Require all denied
+</IfModule>
+
+<IfModule !mod_authz_core.c>
+    # Apache 2.2
+    Order deny,allow
+    Deny from all
+</IfModule>
+
+# Custom error page
+ErrorDocument 403 /lecture27/aimvc/public/errors/403.php
